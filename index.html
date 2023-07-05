@@ -1,0 +1,254 @@
+<DOCTYPE! html>
+    <html>
+
+    <head>
+        <style type="text/css">
+            h1 {
+                text-align: center;
+            }
+
+            body {
+                background-image: url('/Users/hcjha/Desktop/StoryPoints/story_points.jpg');
+                background-position: bottom;
+                background-size: 1400px 400px;
+                background-attachment: fixed;
+                background-repeat: no-repeat;
+
+            }
+
+            label {
+                padding: 5px;
+                width: 200px;
+                text-align: justify;
+                display: inline-block;
+            }
+
+            select {
+                outline: 0;
+                background-image: none;
+                color: black;
+                cursor: pointer;
+                border: 1px solid black;
+                border-radius: 3px;
+            }
+
+            .select {
+                position: relative;
+                display: block;
+                width: 15em;
+                height: 2em;
+                line-height: 3;
+                overflow: hidden;
+                border-radius: .25em;
+                padding-bottom: 10px;
+            }
+
+            #alertBox {
+                position: fixed;
+                width: 20px;
+                min-height: 100px;
+                margin-top: 50px;
+                border: 1px solid #666;
+                background-color: #820f0f;
+                background-position: 20px 30px;
+            }
+
+            h1,
+            h2 {
+                margin: 0;
+                padding: 4px;
+                font: bold 1.5em verdana;
+                border-bottom: 2px solid #000;
+            }
+        </style>
+    </head>
+
+    <body>
+        <header>
+            <h1>Story Pointing</h1>
+        </header>
+        <div id="form">
+            <form>
+                <label style="color:rgb(34, 0, 128);font-weight:500;" for="Effort required">Effort required</label>
+                <select name="effort_required" id="effort">
+                    <option value="empty"></option>
+                    <option value="Minimum">Minimum effort</option>
+                    <option value="Mild">Mild effort</option>
+                    <option value="Moderate">Moderate effort</option>
+                    <option value="Severe">Severe effort</option>
+                    <option value="maximum">maximum effort</option>
+                </select>
+                <br>
+                <br>
+                <label style="color:rgb(34, 0, 128);font-weight:500;" for="Time required">Time required</label>
+                <select name="time_required" id="time">
+                    <option value="empty"></option>
+                    <option value="Minutes">Few minutes</option>
+                    <option value="Hours">Few hours</option>
+                    <option value="Day">A day</option>
+                    <option value="FewDays">Few days</option>
+                    <option value="Week">A week</option>
+                    <option value="Month">A Month</option>
+                </select>
+                <br>
+                <br>
+                <label style="color:rgb(34, 0, 128);font-weight:500;" for="Task complexity">Task complexity</label>
+                <select name="task_complexity" id="task">
+                    <option value="empty"></option>
+                    <option value="Little">Little complexity</option>
+                    <option value="Low">Low complexity</option>
+                    <option value="Medium">Medium complexity</option>
+                    <option value="High">High complexity</option>
+                </select>
+                <br>
+                <br>
+                <label style="color:rgb(34, 0, 128);font-weight:500;" for="Task risk and uncertainity">Task risk and
+                    uncertainity</label>
+                <select name="task_risk_and_uncertainity" id="risk">
+                    <option value="empty"></option>
+                    <option value="None">None</option>
+                    <option value="Low">Low</option>
+                    <option value="Medium">Medium</option>
+                    <option value="High">High</option>
+                </select>
+                <br>
+            </form>
+        </div>
+        <button id="btn1" style="font-weight:800;background-color:gray;"
+            onclick="alert(story_points());">Submit</button>
+        <script>
+            function story_points() {
+                var effort_required = document.getElementById('effort').value;
+                var effort_pts, time_pts, task_pts, risk_pts, totalpts, storypts, lowerbound, upperbound, risk_prc, task_prc, time_prc, effort_prc, text, flag_val;
+                var effort_val, time_val, task_val, risk_val
+                let n1 = 0, n2 = 1, nextTerm;
+                var time_required = document.getElementById('time').value;
+                var task_complexity = document.getElementById('task').value;
+                console.log('came till here')
+                var task_risk_and_uncertainity = document.getElementById('risk').value;
+                if (effort_required == 'empty' || time_required == 'empty' || task_complexity == 'empty' || task_risk_and_uncertainity == 'empty') {
+                    console.log('came inside')
+                    text = "Cannot calculate the story points as the following parameters are not passed\n"
+                    if (effort_required == 'empty') {
+                        effort_val = "Effort required";
+                        text = text + effort_val + "\n";
+                    }
+                    if (time_required == 'empty') {
+                        time_val = "Time required";
+                        text = text + time_val + "\n";
+                    }
+                    if (task_complexity == 'empty') {
+                        task_val = "Task complexity";
+                        text = text + task_val + "\n";
+                    }
+                    if (task_risk_and_uncertainity == 'empty') {
+                        risk_val = "Task risk and uncertainity";
+                        text = text + risk_val + "\n";
+                    }
+                    return text
+                }
+                switch (effort_required) {
+                    case "Minimum":
+                        effort_pts = .33;
+                        break;
+                    case "Mild":
+                        effort_pts = 1;
+                        break;
+                    case "Moderate":
+                        effort_pts = 1.25;
+                        break;
+                    case "Severe":
+                        effort_pts = 2.75;
+                        break;
+                    case "maximum":
+                        effort_pts = 3.25
+                        break;
+                    default:
+                        effort_pts = 0;
+                }
+                switch (time_required) {
+                    case "Minutes":
+                        time_pts = .33;
+                        break;
+                    case "Hours":
+                        time_pts = 1;
+                        break;
+                    case "Day":
+                        time_pts = 1;
+                        break;
+                    case "FewDays":
+                        time_pts = 1.25;
+                        break;
+                    case "Week":
+                        time_pts = 2.75;
+                        break;
+                    case "Month":
+                        time_pts = 3.25
+                        break;
+                    default:
+                        time_pts = 0;
+                }
+                switch (task_complexity) {
+                    case "Little":
+                        task_pts = .33;
+                        break;
+                    case "Low":
+                        task_pts = 1;
+                        break;
+                    case "Medium":
+                        task_pts = 1.25;
+                        break;
+                    case "High":
+                        task_pts = 3.25;
+                        break;
+                    default:
+                        task_pts = 0;
+                }
+                switch (task_risk_and_uncertainity) {
+                    case "None":
+                        risk_pts = .33;
+                        break;
+                    case "Low":
+                        risk_pts = 1;
+                        break;
+                    case "Medium":
+                        risk_pts = 1.25;
+                        break;
+                    case "High":
+                        risk_pts = 3.25;
+                        break;
+                    default:
+                        risk_pts = 0;
+                }
+                totalpts = risk_pts + task_pts + time_pts + effort_pts;
+                nextTerm = n1 + n2;
+                while (nextTerm <= 21) {
+                    n1 = n2;
+                    n2 = nextTerm;
+                    lowerbound = nextTerm;
+
+                    nextTerm = n1 + n2;
+                    upperbound = nextTerm;
+                    if (totalpts >= lowerbound && totalpts <= upperbound) {
+                        if ((totalpts - lowerbound) < (upperbound - totalpts)) {
+                            storypts = lowerbound;
+                        }
+                        else {
+                            storypts = upperbound;
+                        }
+                    }
+                }
+                risk_prc = parseFloat((risk_pts / totalpts) * 100).toFixed(2);
+                time_prc = parseFloat((time_pts / totalpts) * 100).toFixed(2);
+                task_prc = parseFloat((task_pts / totalpts) * 100).toFixed(2);
+                effort_prc = parseFloat((effort_pts / totalpts) * 100).toFixed(2);
+                text = "Total points is " + totalpts + "\nStory point is " + storypts + "\nEffort is " + effort_prc +
+                    "%\nTime is " + time_prc + "%\nTask is " + task_prc + "%\nRisk is " + risk_prc + "%";
+                //  alert(text);  
+                return text
+            }
+        </Script>
+
+    </body>
+
+    </html>
